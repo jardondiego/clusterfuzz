@@ -52,6 +52,29 @@ We will use [clusterfuzz-announce(#)googlegroups.com](https://groups.google.com/
 For a more lightweight version of ClusterFuzz that runs on CI/CD
 systems, check out [ClusterFuzzLite](http://github.com/google/clusterfuzzlite).
 
+## Butler
+
+`butler.py` is a script to help you with command-line tasks (e.g. running unit tests, deploying). It is the main tool for developing and maintaining ClusterFuzz.
+
+Here is what it can do:
+
+- **bootstrap**: Installs all required dependencies (Python, Go, etc.) for running the App Engine, bots, and MapReduce locally.
+- **py_unittest**: Runs Python unit tests. Supports running tests in parallel, filtering by pattern, and targeting specific modules (appengine, core, modules, cli).
+- **js_unittest**: Runs JavaScript unit tests. Supports keeping the browser open for debugging.
+- **format**: Formats changed code in the current branch using standard formatters.
+- **lint**: Lints changed code in the current branch. Can also run type checkers.
+- **run_server**: Runs the local ClusterFuzz server. Supports bootstrapping the local database and skipping dependency installation.
+- **run_bot**: Runs a local ClusterFuzz bot. You can specify the bot name and directory.
+- **reproduce**: Reproduces a testcase locally. Requires a config directory and a testcase ID.
+- **deploy**: Deploys ClusterFuzz to App Engine. Supports deploying to staging or production, and targeting specific components (appengine, terraform, zips).
+- **package**: Packages ClusterFuzz source code into a zip file for staging or release.
+- **create_config**: Creates a new deployment configuration, setting up project ID, Firebase API key, OAuth secrets, and region settings.
+- **integration_tests**: Runs end-to-end integration tests to ensure system stability.
+- **remote**: Helper to run commands on a remote bot instance. Supports tailing logs (`tail`, `tailf`), restarting the bot, rebooting the instance, staging zip files, and launching RDP.
+- **run**: Runs a one-off script (from `local/butler/scripts`) against the datastore. Useful for migrations or maintenance tasks.
+- **clean_indexes**: Cleans up undefined indexes in `index.yaml` based on the current configuration.
+- **weights**: Command to interact with probability weights for fuzzers and jobs, allowing you to list, aggregate, or set weights for fuzzing scheduling.
+
 [Chrome]: https://bugs.chromium.org/p/chromium/issues/list?can=1&q=label%3AClusterFuzz+-status%3AWontFix%2CDuplicate
 [8,900]: https://bugs.chromium.org/p/oss-fuzz/issues/list?q=status%3AFixed%2CVerified%20Type%3DBug-Security&can=1
 [28,000]: https://bugs.chromium.org/p/oss-fuzz/issues/list?q=status%3AFixed%2CVerified%20Type%3DBug&can=1

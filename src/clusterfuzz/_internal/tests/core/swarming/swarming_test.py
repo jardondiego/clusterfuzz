@@ -264,3 +264,34 @@ class SwarmingTest(unittest.TestCase):
         url=expected_url,
         data=json_format.MessageToJson(expected_new_task_request),
         headers=expected_headers)
+
+  def test_is_swarming_task(self):
+    """Tests is_swarming_task."""
+    # IS_SWARMING_JOB = True and mapping exists -> True
+    job = data_types.Job(
+        name='swarming_job',
+        platform='LINUX',
+        environment_string='IS_SWARMING_JOB = True')
+    job.put()
+    self.assertTrue(swarming.is_swarming_task('fuzz', job.name))
+
+    # IS_SWARMING_JOB = False and mapping exists -> False
+    job2 = data_types.Job(
+        name='non_swarming_job',
+        platform='LINUX',
+        environment_string='IS_SWARMING_JOB = False')
+    job2.put()
+    self.assertFalse(swarming.is_swarming_task('fuzz', job2.name))
+
+    # IS_SWARMING_JOB missing and mapping exists -> False
+    job3 = data_types.Job(name='no_env_job', platform='LINUX')
+    job3.put()
+    self.assertFalse(swarming.is_swarming_task('fuzz', job3.name))
+
+    # IS_SWARMING_JOB = True but no mapping exists -> False
+    job4 = data_types.Job(
+        name='no_mapping_job',
+        platform='UNKNOWN',
+        environment_string='IS_SWARMING_JOB = True')
+    job4.put()
+    self.assertFalse(swarming.is_swarming_task('fuzz', job4.name))

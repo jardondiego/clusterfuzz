@@ -1,0 +1,17 @@
+{
+  "name": "ClusterFuzz Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/root/.localpython/bin/python3.11"
+      },
+      "extensions": [
+        "ms-python.python"
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+    "name": "ClusterFuzz Dev Environment",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest"
+        }
+    },
+    "remoteUser": "clusterfuzz",
+    "containerEnv": {
+        "PYTHONPATH": "/workspaces/clusterfuzz/src",
+        "CLOUDSDK_PYTHON": "python3.11",
+        "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk-amd64"
+    },
+    "postCreateCommand": "./local/install_deps.bash",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/bin/python3",
+                "python.linting.enabled": true,
+                "python.linting.pylintEnabled": true,
+                "python.formatting.provider": "yapf",
+                "python.testing.unittestEnabled": true,
+                "python.testing.unittestArgs": [
+                    "-v",
+                    "-p",
+                    "*_test.py"
+                ]
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-ceintl.vscode-language-pack-en",
+                "eamodio.gitlens",
+                "googlecloudtools.cloudcode"
+            ]
+        }
+    },
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspaces/clusterfuzz,type=bind,consistency=cached"
+    ],
+    "workspaceFolder": "/workspaces/clusterfuzz"
+}
